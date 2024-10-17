@@ -1,5 +1,5 @@
 --[[
--- ui library: https://raw.githubusercontent.com/Turtle-Brand/Turtle-Lib/main/source.lua (by ZCute (from v3rmillion Thread))
+-- ui library: https://raw.githubusercontent.com/Turtle-Brand/Turtle-Lib/main/source.lua (by Turtle (from GitHub Group))
 --]]
 
 local library = {}
