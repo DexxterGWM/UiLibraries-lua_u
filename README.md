@@ -9,5 +9,5 @@
 ```css
 * Platform: `Roblox`
   - Can only be used through: Roblox executors
-  - Developed and tested for: Mobile devices
+  - Tested on Mobile devices
 ```
