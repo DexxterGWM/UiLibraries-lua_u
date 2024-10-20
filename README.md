@@ -1,7 +1,7 @@
 ### <div align='center'>⚒️ UI Libraries</div>
 #
 
-- **UI Libraries for [_Dexxter Scripts](https://github.com/DexxterGWM/DexxterScripts-lua_u)** <br/>
+- **UI Libraries for [_Dexxter Scripts_](https://github.com/DexxterGWM/DexxterScripts-lua_u)** <br/>
 
 ### <div align='center'>📑 Technical Information</div>
 #
