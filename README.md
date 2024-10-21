@@ -11,3 +11,24 @@
   - Can only be used through: Roblox executors
   - Tested on Mobile devices
 ```
+<br/>
+
+_Changelog_ **(MM/DD/YYYY)**:
+  - Last date: 10/21/2024
+
+<!--
+              (`.          ,-,
+              ` `.     ,;' /
+               ` .  ,'/ .'
+                 `. X /.'
+       .-;--''--.._` ` ('
+     .'           /    `
+    ,          ` '    Q '
+    ,         ,   `._    \
+ ,.|         '     `-.;_'
+ :  . `   ;   `  ` --,.._;
+  ' `     ,  )   .'
+     `._  , '   /_
+        ; ,''-,;' ``-
+         ``-..__``--`
+-->
