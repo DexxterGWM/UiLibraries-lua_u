@@ -1343,7 +1343,7 @@ function library:Window(Info)
                                                 end)
                                         end)
                                         MouseKill = UserInputService.InputEnded:Connect(function(UserInput)
-                                                if UserInput.UserInputType == Enum.UserInputType.MouseButton1 then
+                                                if UserInput.UserInputType == Enum.UserInputType.MouseButton1 or UserInput.UserInputType == Enum.UserInputType.Touch then
                                                         MouseMove:Disconnect()
                                                         MouseKill:Disconnect()
                                                 end
