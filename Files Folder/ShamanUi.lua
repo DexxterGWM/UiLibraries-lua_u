@@ -2,32 +2,49 @@
 -- ui library: https://raw.githubusercontent.com/Rain-Design/Libraries/main/Shaman/Library.lua (by ZCute (from v3rmillion Thread))
 --]]
 
----@return <table>
-local getgenv = function()
-        return (getgenv and getgenv()) or shared
-end
-
 ---@param ... <any>
 ---@return <any>
 getgenv().cloneref = cloneref or function(...) return ... end
 
-getgenv().request = request or httprequest or http_request or (syn and syn.request) or (http and http.request)
+getgenv().request = request or httprequest or http_request or httpget or (http and http.request) or (syn and syn.request) or (fluxus and fluxus.request)
 getgenv().getcustomasset = getcustomasset or getsynasset
 getgenv().isfolder = isfolder or is_folder or syn_isfolder
 getgenv().listfiles = listfiles or list_files or listdir
 getgenv().writefile = writefile or write_file
 getgenv().makefolder = makefolder or make_folder or createfolder or create_folder
 
-local CoreGui = cloneref(Game:GetService 'CoreGui')
-local TweenService = cloneref(Game:GetService 'TweenService')
-local UserInputService = cloneref(Game:GetService 'UserInputService')
-local Players = cloneref(Game:GetService 'Players')
+local GetService = Game.GetService
+local Destroy = Game.Destroy
+
+local CoreGui = cloneref(GetService(Game, 'CoreGui'))
+local TweenService = cloneref(GetService(Game, 'TweenService'))
+local UserInputService = cloneref(GetService(Game, 'UserInputService'))
+local Players = cloneref(GetService(Game, 'Players'))
+
+local __instance = {}
+do
+        __instance.new = function(ClassName, Parent, Properties)
+                local Instance = Instance.new(ClassName)
+                local Properties = Properties or {}
+                local Parent = Parent or Instance
+                
+                if Instance == Parent then
+                else
+                        Instance.Parent = Parent
+                end
+
+                for i, v in next, Properties do
+                        Instance[i] = v
+                end
+                return Instance
+        end
+end
 
 if Game.FindFirstChild(CoreGui, 'Shaman') then
-        CoreGui.Shaman:Destroy()
+        Destroy(CoreGui.Shaman)
 end
 if Game.FindFirstChild(CoreGui, 'Tooltips') then
-        CoreGui.Tooltips:Destroy()
+        Destroy(CoreGui.Tooltips)
 end
 
 local Mouse = Players.LocalPlayer:GetMouse()
@@ -46,16 +63,8 @@ local Blacklist = {
         Enum.KeyCode.D
 }
 
-local CheckTable = function(Table)
-        local i = 0
-        for _, v in next, Table do
-                i = i + 1
-        end
-        return i
-end
-
 local TabSelected = nil
-local EditOpened = false --- ;
+local EditOpened = true --- ;?
 local ColorElements = {} --- ;
 
 local library = {
@@ -100,7 +109,8 @@ do
         local MissingTable = {}
 
         for i, v in next, IconsTable do
-                if not isfile(i) then
+                if isfile(i) then
+                else
                         table.insert(MissingTable, i)
                 end
         end
@@ -108,11 +118,11 @@ do
         if 0 < #MissingTable then
                 warn(':: Shaman :: !~ Downloading resources') ---
 
-                local download = Instance.new('ScreenGui')
-                download.Name = 'Download'
-                download.Enabled = true
-                download.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-                download.Parent = CoreGui
+                local download = __instance.new('ScreenGui', CoreGui, {
+                        Name = 'Download';
+                        Enabled = true;
+                        ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
+                })
 
                 local dMain = Instance.new('Frame')
                 dMain.Name = 'DMain'
@@ -178,19 +188,13 @@ do
                 dText.Size = UDim2.new(0, 284, 0, 46)
                 dText.Parent = dMain
 
-                local _S, _R = xpcall(function()
-                        for _, v in next, MissingTable do
-                                local Png = request({Url = IconsTable[v].Url, Method = 'GET'})
-                                writefile(v, Png.Body)
-                                dText.Text = ('Downloaded: %s'):format(IconsTable[v].Name)
-                        end
-                        return true
-                end, function(Err)
-                        warn((':: Shaman :: ?~ Downloading resources: %s'):format(tostring(Err))) ---
-                end)
-                if _S and _R then
-                        warn(':: Shaman :: !~ Resources Succefully Downloaded') ---
+                for _, v in next, MissingTable do
+                        local Png = request({Url = IconsTable[v].Url, Method = 'GET'})
+                        writefile(v, Png.Body)
+                        dText.Text = ('Downloaded: %s'):format(IconsTable[v].Name)
                 end
+
+                warn(':: Shaman :: !~ Resources Succefully Downloaded') ---
 
                 download:Destroy()
         end
@@ -746,7 +750,7 @@ function library:Window(Info)
                         else
                                 Side = rightContainer
                         end
-    
+        
                         local section = Instance.new('Frame')
                         section.Name = 'Section'
                         section.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
@@ -995,8 +999,16 @@ function library:Window(Info)
 
                         function sectiontable:Button(Info)
                                 Info.Text = Info.Text or 'Button'
+                                Info.SubText = Info.SubText or Info.Text --- ;
+                                Info.Flag = Info.Flag or nil
                                 Info.Callback = Info.Callback or function() end
                                 Info.Tooltip = Info.Tooltip or ''
+
+                                if Info.Flag ~= nil then
+                                        library.Flags[Info.Flag] = false
+                                end
+
+                                local Toggled = false --- ;
 
                                 local buttontable = {}
 
@@ -1035,16 +1047,27 @@ function library:Window(Info)
                                 textButton.Size = UDim2.new(0, 162, 0, 27)
                                 textButton.Parent = button
 
-                                textButton.MouseButton1Click:Connect(function()
-                                        task.spawn(function()
-                                                pcall(Info.Callback)
-                                        end)
+                                textButton.MouseButton1Click:Connect(function() --- ;
+                                        if not Toggled then
+                                                Toggled = true
+                                                task.spawn(function()
+                                                        pcall(Info.Callback)
+                                                end)
+                                                if Info.Text == Info.SubText then
+                                                else
+                                                        buttonText.Text = Info.SubText
+                                                        wait(3)
+                                                end
+                                                buttonText.Text = Info.Text
+                                                Toggled = false
+                                        end
                                 end)
                         end
 
                         function sectiontable:Input(Info)
                                 Info.Placeholder = Info.Placeholder or 'Input'
                                 Info.Flag = Info.Flag or nil
+                                print(':: Shaman :: flag setted: ' .. Info.Flag) --- ;
                                 Info.Callback = Info.Callback or function() end
                                 Info.Tooltip = Info.Tooltip or ''
 
@@ -1106,6 +1129,7 @@ function library:Window(Info)
                                         task.spawn(function()
                                                 pcall(Info.Callback, inputTextBox.Text)
                                                 if Info.Flag ~= nil then
+                                                        print(':: Shaman :: flag changed: ' .. library.Flags[Info.Flag] .. ' -> ' .. inputTextBox.Text) --- ;
                                                         library.Flags[Info.Flag] = inputTextBox.Text
                                                 end
                                         end)
@@ -1890,5 +1914,5 @@ function library:Window(Info)
 
         return window
 end
-
+                
 return library
