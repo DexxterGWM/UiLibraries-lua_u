@@ -1129,7 +1129,7 @@ function library:Window(Info)
                                         task.spawn(function()
                                                 pcall(Info.Callback, inputTextBox.Text)
                                                 if Info.Flag ~= nil then
-                                                        print(':: Shaman :: flag changed: ' Info.Flag .. ' -> ' .. library.Flags[Info.Flag]) --- ;
+                                                        print(':: Shaman :: flag changed: ' .. Info.Flag .. ' -> ' .. library.Flags[Info.Flag]) --- ;
                                                         library.Flags[Info.Flag] = inputTextBox.Text
                                                 end
                                         end)
