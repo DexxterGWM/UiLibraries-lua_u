@@ -1073,7 +1073,7 @@ function library:Window(Info)
 
                                 if Info.Flag ~= nil then
                                         library.Flags[Info.Flag] = nil
-                                        print(':: Shaman :: flag setted: ' .. Info.Flag .. ' = ' .. library.Flags[Info.Flag]) --- ;
+                                        print(':: Shaman :: flag setted: ' .. Info.Flag .. ' = ' .. tostring(library.Flags[Info.Flag])) --- ;
                                 end
 
                                 local input = Instance.new('Frame')
