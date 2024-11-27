@@ -1072,8 +1072,8 @@ function library:Window(Info)
                                 Info.Tooltip = Info.Tooltip or ''
 
                                 if Info.Flag ~= nil then
-                                        library.Flags[Info.Flag] = Info.Flag
-                                        print(':: Shaman :: flag setted: ' .. library.Flags[Info.Flag]) --- ;
+                                        library.Flags[Info.Flag] = nil
+                                        print(':: Shaman :: flag setted: ' .. Info.Flag .. ' = ' .. library.Flags[Info.Flag]) --- ;
                                 end
 
                                 local input = Instance.new('Frame')
