@@ -1067,9 +1067,14 @@ function library:Window(Info)
                         function sectiontable:Input(Info)
                                 Info.Placeholder = Info.Placeholder or 'Input'
                                 Info.Flag = Info.Flag or nil
-                                print(':: Shaman :: flag setted: ' .. Info.Flag) --- ;
+                                print(':: Shaman :: flag configured: ' .. Info.Flag) --- ;
                                 Info.Callback = Info.Callback or function() end
                                 Info.Tooltip = Info.Tooltip or ''
+
+                                if Info.Flag ~= nil then
+                                        library.Flags[Info.Flag] = Info.Flag
+                                        print(':: Shaman :: flag setted: ' .. library.Flags[Info.Flag]) --- ;
+                                end
 
                                 local input = Instance.new('Frame')
                                 input.Name = 'Input'
