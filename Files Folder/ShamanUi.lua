@@ -1067,13 +1067,11 @@ function library:Window(Info)
                         function sectiontable:Input(Info)
                                 Info.Placeholder = Info.Placeholder or 'Input'
                                 Info.Flag = Info.Flag or nil
-                                print(':: Shaman :: flag configured: ' .. Info.Flag) --- ;
                                 Info.Callback = Info.Callback or function() end
                                 Info.Tooltip = Info.Tooltip or ''
 
                                 if Info.Flag ~= nil then
                                         library.Flags[Info.Flag] = nil
-                                        print(':: Shaman :: flag setted: ' .. tostring(Info.Flag) .. ' = ' .. tostring(library.Flags[Info.Flag])) --- ;
                                 end
 
                                 local input = Instance.new('Frame')
@@ -1132,11 +1130,10 @@ function library:Window(Info)
 
                                 inputTextBox.FocusLost:Connect(function()
                                         task.spawn(function()
-                                                pcall(Info.Callback, inputTextBox.Text)
                                                 if Info.Flag ~= nil then
                                                         library.Flags[Info.Flag] = inputTextBox.Text
-                                                        print(':: Shaman :: flag changed: ' .. Info.Flag .. ' -> ' .. library.Flags[Info.Flag]) --- ;
                                                 end
+                                                pcall(Info.Callback, inputTextBox.Text)
                                         end)
                                 end)
                         end
