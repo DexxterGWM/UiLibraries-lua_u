@@ -9,8 +9,9 @@ getgenv().cloneref = cloneref or function(...) return ... end
 getgenv().request = request or httprequest or http_request or httpget or (http and http.request) or (syn and syn.request) or (fluxus and fluxus.request)
 getgenv().getcustomasset = getcustomasset or getsynasset
 getgenv().isfolder = isfolder or is_folder or syn_isfolder
-getgenv().listfiles = listfiles or list_files or listdir
-getgenv().writefile = writefile or write_file
+getgenv().isfile = isfile or is_file or syn_isfile
+--- getgenv().listfiles = listdir or listfiles or list_files
+getgenv().writefile = write or writefile or write_file
 getgenv().makefolder = makefolder or make_folder or createfolder or create_folder
 
 local GetService = Game.GetService
@@ -23,7 +24,7 @@ local Players = cloneref(GetService(Game, 'Players'))
 
 local __instance = {}
 do
-        __instance.new = function(ClassName, Parent, Properties)
+        __instance.new = function(ClassName, Properties, Parent)
                 local Instance = Instance.new(ClassName)
                 local Properties = Properties or {}
                 local Parent = Parent or Instance
@@ -64,8 +65,8 @@ local Blacklist = {
 }
 
 local TabSelected = nil
-local EditOpened = true --- ;?
-local ColorElements = {} --- ;
+--- local EditOpened = false
+local ColorElements = {}
 
 local library = {
         Flags = {}
@@ -118,75 +119,83 @@ do
         if 0 < #MissingTable then
                 warn(':: Shaman :: !~ Downloading resources') ---
 
-                local download = __instance.new('ScreenGui', CoreGui, {
+                local download = __instance.new('ScreenGui', {
                         Name = 'Download';
                         Enabled = true;
                         ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
+                }, CoreGui)
+
+                local dMain = __instance.new('Frame', {
+                        Name = 'DMain';
+                        AnchorPoint = Vector2.new(0.5, 0.5);
+                        BackgroundColor3 = Color3.fromRGB(27, 27, 27);
+                        Position = UDim2.new(0.5, 0, 0.486, 0);
+                        Size = UDim2.new(0, 285, 0, 77);
+                        Parent = download;
                 })
 
-                local dMain = Instance.new('Frame')
-                dMain.Name = 'DMain'
-                dMain.AnchorPoint = Vector2.new(0.5, 0.5)
-                dMain.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
-                dMain.Position = UDim2.new(0.5, 0, 0.486, 0)
-                dMain.Size = UDim2.new(0, 285, 0, 77)
-                dMain.Parent = download
+                local dUICorner = __instance.new('UICorner', {
+                        Name = 'DUICorner';
+                        CornerRadius = UDim.new(0, 5);
+                        Parent = dMain;
+                })
 
-                local dUICorner = Instance.new('UICorner')
-                dUICorner.Name = 'DUICorner'
-                dUICorner.CornerRadius = UDim.new(0, 5)
-                dUICorner.Parent = dMain
+                local dUIStroke = __instance.new('UIStroke', {
+                        Name = 'DUIStroke';
+                        Color = Color3.fromRGB(45, 45, 45);
+                        Parent = dMain;
+                })
 
-                local dUIStroke = Instance.new('UIStroke')
-                dUIStroke.Name = 'DUIStroke'
-                dUIStroke.Color = Color3.fromRGB(45, 45, 45)
-                dUIStroke.Parent = dMain
+                local dTopbar = __instance.new('Frame', {
+                        Name = 'DTopbar';
+                        BackgroundColor3 = Color3.fromRGB(25, 25, 25);
+                        Size = UDim2.new(0, 285, 0, 31);
+                        Parent = dMain;
+                })
 
-                local dTopbar = Instance.new('Frame')
-                dTopbar.Name = 'DTopbar'
-                dTopbar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-                dTopbar.Size = UDim2.new(0, 285, 0, 31)
-                dTopbar.Parent = dMain
+                local dUICorner1 = __instance.new('UICorner', {
+                        Name = 'DUICorner';
+                        CornerRadius = UDim.new(0, 5);
+                        Parent = dTopbar;
+                })
 
-                local dUICorner1 = Instance.new('UICorner')
-                dUICorner1.Name = 'DUICorner'
-                dUICorner1.CornerRadius = UDim.new(0, 5)
-                dUICorner1.Parent = dTopbar
+                local dFix = __instance.new('Frame', {
+                        Name = 'DFix';
+                        AnchorPoint = Vector2.new(0.5, 1);
+                        BackgroundColor3 = Color3.fromRGB(34, 34, 34);
+                        BorderSizePixel = 0;
+                        Position = UDim2.new(0.5, 0, 1.02, 0);
+                        Size = UDim2.new(0, 284, 0, 1);
+                        ZIndex = 2;
+                        Parent = dTopbar;
+                })
 
-                local dFix = Instance.new('Frame')
-                dFix.Name = 'DFix'
-                dFix.AnchorPoint = Vector2.new(0.5, 1)
-                dFix.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
-                dFix.BorderSizePixel = 0
-                dFix.Position = UDim2.new(0.5, 0, 1.02, 0)
-                dFix.Size = UDim2.new(0, 284, 0, 1)
-                dFix.ZIndex = 2
-                dFix.Parent = dTopbar
+                local dTitleText = __instance.new('TextLabel', {
+                        Name = 'DTitleText';
+                        Font = Enum.Font.GothamBold;
+                        Text = 'Downloading Assets';
+                        TextColor3 = Color3.fromRGB(255, 255, 255);
+                        TextSize = 12;
+                        BackgroundColor3 = Color3.fromRGB(237, 237, 237);
+                        BackgroundTransparency = 1;
+                        Position = UDim2.new(0.00132, 0, 0, 0);
+                        Size = UDim2.new(0, 284, 0, 30);
+                        ZIndex = 2;
+                        Parent = dTopbar;
+                })
 
-                local dTitleText = Instance.new('TextLabel')
-                dTitleText.Name = 'DTitleText'
-                dTitleText.Font = Enum.Font.GothamBold
-                dTitleText.Text = 'Downloading Assets'
-                dTitleText.TextColor3 = Color3.fromRGB(255, 255, 255)
-                dTitleText.TextSize = 12
-                dTitleText.BackgroundColor3 = Color3.fromRGB(237, 237, 237)
-                dTitleText.BackgroundTransparency = 1
-                dTitleText.Position = UDim2.new(0.00132, 0, 0, 0)
-                dTitleText.Size = UDim2.new(0, 284, 0, 30)
-                dTitleText.ZIndex = 2
-                dTitleText.Parent = dTopbar
-
-                local dText = Instance.new('TextLabel')
-                dText.Name = 'DText'
-                dText.Font = Enum.Font.GothamBold
-                dText.Text = 'Loading...'
-                dText.TextColor3 = Color3.fromRGB(237, 237, 237)
-                dText.TextSize = 11
-                dText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                dText.BackgroundTransparency = 1
-                dText.Position = UDim2.new(0.00132, 0, 0.39, 0)
-                dText.Size = UDim2.new(0, 284, 0, 46)
-                dText.Parent = dMain
+                local dText = __instance.new('TextLabel', {
+                        Name = 'DText';
+                        Font = Enum.Font.GothamBold;
+                        Text = 'Loading...';
+                        TextColor3 = Color3.fromRGB(237, 237, 237);
+                        TextSize = 11;
+                        BackgroundColor3 = Color3.fromRGB(255, 255, 255);
+                        BackgroundTransparency = 1;
+                        Position = UDim2.new(0.00132, 0, 0.39, 0);
+                        Size = UDim2.new(0, 284, 0, 46);
+                        Parent = dMain;
+                })
 
                 for _, v in next, MissingTable do
                         local Png = request({Url = IconsTable[v].Url, Method = 'GET'})
@@ -1223,7 +1232,8 @@ function library:Window(Info)
                                         TweenService:Create(circleIcon, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {Position = Toggled and UDim2.new(0, 16,0.067, 0) or UDim2.new(0, 1,0.067, 0)}):Play()
                                         if not Toggled then
                                                 TweenService:Create(toggleFrame, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundColor3 = Color3.fromRGB(68, 68, 68)}):Play()
-                                        elseif Toggled and not EditOpened then
+                                        --- elseif Toggled and not EditOpened then
+                                        elseif Toggled then
                                                 TweenService:Create(toggleFrame, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundColor3 = Color3.fromRGB(48, 207, 106)}):Play()
                                         end
                                         pcall(Info.Callback, Toggled)
@@ -1805,10 +1815,10 @@ function library:Window(Info)
 
                                                 TweenService:Create(radioText, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
 
-                                                if not EditOpened then
-                                                        TweenService:Create(radioInner, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {ImageColor3 = RadioOpened and Color3.fromRGB(48, 207, 106) or Color3.fromRGB(191, 191, 191)}):Play()
-                                                        TweenService:Create(radioOuter, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {ImageColor3 = RadioOpened and Color3.fromRGB(48, 207, 106) or Color3.fromRGB(191, 191, 191)}):Play()
-                                                end
+                                                --- if not EditOpened then
+                                                TweenService:Create(radioInner, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {ImageColor3 = RadioOpened and Color3.fromRGB(48, 207, 106) or Color3.fromRGB(191, 191, 191)}):Play()
+                                                TweenService:Create(radioOuter, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {ImageColor3 = RadioOpened and Color3.fromRGB(48, 207, 106) or Color3.fromRGB(191, 191, 191)}):Play()
+                                                --- end
                                         end)
                                 end
 
