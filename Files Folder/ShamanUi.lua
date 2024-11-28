@@ -204,8 +204,7 @@ do
                 end
 
                 warn(':: Shaman :: !~ Resources Succefully Downloaded') ---
-
-                download:Destroy()
+                Destroy(download)
         end
 end
 
@@ -416,8 +415,8 @@ function library:Window(Info)
 
         closeButton.MouseButton1Click:Once(function()
                 pcall(Info.Callback)
-                shamanScreenGui:Destroy()
-                tooltipScreenGui:Destroy()
+                Destroy(shamanScreenGui)
+                Destroy(tooltipScreenGui)
         end)
 
         closeButton.MouseEnter:Connect(function()
@@ -1553,7 +1552,7 @@ function library:Window(Info)
                                                                 sectionFrame.Size = UDim2.new(0, 162, 0, sectionFrame.Size.Y.Offset - 27)
                                                                 section.Size = UDim2.new(0, 162, 0, section.Size.Y.Offset - 27)
                                                         end
-                                                        v:Destroy()
+                                                        Destroy(v)
                                                 end
                                         end
 
