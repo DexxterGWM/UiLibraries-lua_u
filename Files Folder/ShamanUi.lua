@@ -6,13 +6,13 @@
 ---@return <any>
 getgenv().cloneref = cloneref or function(...) return ... end
 
-getgenv().request = request or httprequest or http_request or httpget or (http and http.request) or (syn and syn.request) or (fluxus and fluxus.request)
-getgenv().getcustomasset = getcustomasset or getsynasset
-getgenv().isfolder = isfolder or is_folder or syn_isfolder
-getgenv().isfile = isfile or is_file or syn_isfile
+getgenv().request = (http and http.request) or (syn and syn.request) or (fluxus and fluxus.request) or httprequest or request or http_request or httpget
+getgenv().getcustomasset = getsynasset or getcustomasset
+getgenv().isfolder = syn_isfolder or is_folder or isfolder
+getgenv().isfile = syn_isfile or is_file or isfile
 --- getgenv().listfiles = listdir or listfiles or list_files
-getgenv().writefile = write or writefile or write_file
-getgenv().makefolder = makefolder or make_folder or createfolder or create_folder
+getgenv().writefile = write or write_file or writefile
+getgenv().makefolder = create_folder or createfolder or make_folder or makefolder
 
 local GetService = Game.GetService
 local Destroy = Game.Destroy
@@ -1064,7 +1064,7 @@ function library:Window(Info)
                                                 if Info.Text == Info.SubText then
                                                 else
                                                         buttonText.Text = Info.SubText
-                                                        wait(3)
+                                                        wait(2)
                                                 end
                                                 buttonText.Text = Info.Text
                                                 Toggled = false
