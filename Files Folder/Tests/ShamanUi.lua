@@ -73,6 +73,7 @@ local library = {
 }
 
 do
+        --- ;
         if not isfolder('Shaman') then
                 makefolder('Shaman')
         end
