@@ -289,7 +289,8 @@ function library:Window(Info)
                                 Tooltip.Visible = true
                         end
                         ]=]
-                        
+
+                        --- ;
                         hovered = element
                         Hovered = true
                         wait(.5)
