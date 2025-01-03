@@ -1,3 +1,8 @@
+---@diagnostic disable: undefined-global, duplicate-set-field, deprecated, luadoc-miss-type-name
+
+---@TODO
+---@TEST
+
 --[[
 -- ui library: https://raw.githubusercontent.com/Rain-Design/Libraries/main/Shaman/Library.lua (by ZCute (from v3rmillion Thread))
 --]]
@@ -14,6 +19,8 @@ getgenv().isfile = syn_isfile or is_file or isfile
 getgenv().writefile = write or write_file or writefile
 getgenv().makefolder = create_folder or make_folder or createfolder or makefolder
 
+local Game = cloneref(Game)
+
 local GetService = Game.GetService
 local Destroy = Game.Destroy
 
@@ -22,23 +29,33 @@ local TweenService = cloneref(GetService(Game, 'TweenService'))
 local UserInputService = cloneref(GetService(Game, 'UserInputService'))
 local Players = cloneref(GetService(Game, 'Players'))
 
-local __instance = {}
-do
-        __instance.new = function(ClassName, Properties, Parent)
+local Tostring = clonefunction(tostring)
+
+local __instance = {
+	new = function(Data)
+                local ClassName = Data.ClassName
+                local Properties = Data.Properties
+                local Parent = Properties.Parent
+
                 local Instance = Instance.new(ClassName)
-                local Properties = Properties or {}
-                local Parent = Parent or Instance
-                
-                if Instance == Parent then
-                else
-                        Instance.Parent = Parent
+                for i, v in next, Properties do
+                                Instance[i] = v
                 end
 
-                for i, v in next, Properties do
-                        Instance[i] = v
-                end
+                Instance.Parent = Parent
                 return Instance
-        end
+	end
+}
+
+---@param Length <number>
+---@return <string>
+local __random_abcE = function(Length)
+	local RandomString = ''
+	for _ = 1, Length do
+			local RandomNumber = math.random(97, 122)
+			RandomString = RandomString .. string.char(RandomNumber)
+	end
+	return Tostring(RandomString)
 end
 
 if Game.FindFirstChild(CoreGui, 'Shaman') then
@@ -220,7 +237,6 @@ function library:Window(Info)
         Info.Callback = Info.Callback or function() end
 
         local window = {}
-        local hovered --- ;
 
         local shamanScreenGui = Instance.new('ScreenGui')
         shamanScreenGui.Name = 'Shaman'
@@ -283,24 +299,10 @@ function library:Window(Info)
                 end
 
                 element.MouseEnter:Connect(function()
-                        --[=[
                         Hovered = true
                         wait(.5)
                         if Hovered then
                                 Tooltip.Visible = true
-                        end
-                        ]=]
-
-                        --- ;
-                        hovered = element
-                        Hovered = true
-                        wait(.5)
-                        if hovered == element then
-                                if Hovered then
-                                        Tooltip.Visible = true
-                                end
-                        else
-                                Tooltip.Visible = false
                         end
                 end)
 
@@ -323,6 +325,61 @@ function library:Window(Info)
         main.Size = UDim2.new(0, 450, 0, 321)
         main.Parent = shamanScreenGui
         main.Active = true --- ;
+
+        --- TEST
+        do
+                local mainFrame = Instance.new('ImageButton')
+                local UICorner = Instance.new('UICorner')
+
+                mainFrame.Image = 'rbxassetid://138677317526548'
+                mainFrame.HoverImage = 'rbxassetid://99948234050445'
+                mainFrame.PressedImage = 'rbxassetid://111976017507856'
+
+                mainFrame.Name = __random_abcE(10)
+                mainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+                mainFrame.BackgroundTransparency = 0.14
+
+                mainFrame.BorderColor3 = Color3.fromRGB(27, 27, 27)
+                mainFrame.BorderMode = Enum.GuiObject.BorderMode.Outline
+                mainFrame.BorderSizePixel = 1.5
+
+                mainFrame.Position = UDim2.new(0.489, 0, 0, 0)
+                mainFrame.Size = UDim2.new(0, 42, 0, 43)
+                mainFrame.Draggable = true
+                mainFrame.Parent = shamanScreenGui
+
+                UICorner.Name = __random_abcE(10)
+                UICorner.CornerRadius = UDim.new(0, 5)
+                UICorner.Parent = mainFrame
+
+                local dragInput
+                local isDragging = false
+
+                mainFrame.InputBegan:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                                isDragging = true
+                                input.Changed:Connect(function()
+                                        if input.UserInputState == Enum.UserInputState.End then
+                                                isDragging = false
+                                        end
+                                end)
+                        end
+                end)
+                mainFrame.InputChanged:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then --- ;
+                                dragInput = input
+                        end
+                end)
+                mainFrame.InputEnded:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                                if input == dragInput and isDragging then onDrag()
+                                elseif input ~= dragInput and not isDragging then
+                                        main.Visible = not main.Visible
+                                end
+                        end
+                end)
+        end
+        ---
 
         local uICorner = Instance.new('UICorner')
         uICorner.Name = 'UICorner'
@@ -371,7 +428,6 @@ function library:Window(Info)
                         update(input)
                 end
         end)
-
 
         local uICorner1 = Instance.new('UICorner')
         uICorner1.Name = 'UICorner'
@@ -1023,7 +1079,7 @@ function library:Window(Info)
 
                         function sectiontable:Button(Info)
                                 Info.Text = Info.Text or 'Button'
-                                Info.SubText = Info.SubText or Info.Text --- ;
+                                Info.SubText = Info.SubText or 'Clicked' --- ;
                                 Info.Flag = Info.Flag or nil
                                 Info.Callback = Info.Callback or function() end
                                 Info.Tooltip = Info.Tooltip or ''
