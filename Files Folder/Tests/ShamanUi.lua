@@ -348,9 +348,13 @@ function library:Window(Info)
                 mainFrame.Draggable = true
                 mainFrame.Parent = shamanScreenGui
 
+                print('frame:', mainFrame) ---
+
                 UICorner.Name = __random_abcE(10)
                 UICorner.CornerRadius = UDim.new(0, 5)
                 UICorner.Parent = mainFrame
+
+                print('corner:', UICorner) ---
 
                 local dragInput
                 local isDragging = false
@@ -380,6 +384,8 @@ function library:Window(Info)
                 end)
         --- end
         ---
+        
+        print('got that') ---
 
         local uICorner = Instance.new('UICorner')
         uICorner.Name = 'UICorner'
