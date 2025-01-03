@@ -326,6 +326,8 @@ function library:Window(Info)
         main.Parent = shamanScreenGui
         main.Active = true --- ;
 
+        --- TEST
+        --- TODO need border line and better corner radius
         local mainFrame = Instance.new('ImageButton') --- ;
 
         mainFrame.Name = __random_abcE(10)
@@ -333,23 +335,31 @@ function library:Window(Info)
         mainFrame.HoverImage = 'rbxassetid://99948234050445'
         mainFrame.PressedImage = 'rbxassetid://111976017507856'
         
-        mainFrame.ImageTransparency = 0.14
+        mainFrame.Transparency = 0.14
+        --- mainFrame.ImageTransparency = 0.14
         mainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
-        mainFrame.BackgroundTransparency = 0.14
+        --- mainFrame.BackgroundTransparency = 0.14
         mainFrame.BorderSizePixel = 0
 
         mainFrame.Position = UDim2.new(0.489, 0, 0, 0)
         mainFrame.Size = UDim2.new(0, 42, 0, 43)
         
         mainFrame.Draggable = true
-        mainFrame.ZIndex = 1
+        mainFrame.ZIndex = 2
         mainFrame.Parent = shamanScreenGui
 
         local UICorner = Instance.new('UICorner')
 
         UICorner.Name = __random_abcE(10)
-        UICorner.CornerRadius = UDim.new(0, 5)
+        UICorner.CornerRadius = UDim.new(0.2, 0.2)
         UICorner.Parent = mainFrame
+
+        local UIStroke = Instance.new('UIStroke')
+        
+        UIStroke.Color = Color3.fromRGB(27, 27, 27)
+        UIStroke.Thickness = 2.5
+        UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        UIStroke.Parent = mainFrame
 
         local dragInput
         local isDragging = false
