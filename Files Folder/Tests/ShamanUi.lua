@@ -90,8 +90,7 @@ local library = {
 }
 
 do
-        --- ;
-        if not isfolder('Shaman') then
+        if not isfolder('Shaman') then --- ;
                 makefolder('Shaman')
         end
 
@@ -137,47 +136,48 @@ do
         if 0 < #MissingTable then
                 warn(':: Shaman :: !~ Downloading resources') ---
 
-                local download = __instance.new('ScreenGui', {
+                local download = __instance.new({ClassName = 'ScreenGui'; Properties = {
                         Name = 'Download';
                         Enabled = true;
                         ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
-                }, CoreGui)
+                        Parent = CoreGui;
+                };})
 
-                local dMain = __instance.new('Frame', {
+                local dMain = __instance.new({ClassName = 'Frame'; Properties = {
                         Name = 'DMain';
                         AnchorPoint = Vector2.new(0.5, 0.5);
                         BackgroundColor3 = Color3.fromRGB(27, 27, 27);
                         Position = UDim2.new(0.5, 0, 0.486, 0);
                         Size = UDim2.new(0, 285, 0, 77);
                         Parent = download;
-                })
+                };})
 
-                local dUICorner = __instance.new('UICorner', {
+                local dUICorner = __instance.new({ClassName = 'UICorner'; Properties = {
                         Name = 'DUICorner';
                         CornerRadius = UDim.new(0, 5);
                         Parent = dMain;
-                })
+                };})
 
-                local dUIStroke = __instance.new('UIStroke', {
+                local dUIStroke = __instance.new({ClassName = 'UIStroke'; Properties = {
                         Name = 'DUIStroke';
                         Color = Color3.fromRGB(45, 45, 45);
                         Parent = dMain;
-                })
+                };})
 
-                local dTopbar = __instance.new('Frame', {
+                local dTopbar = __instance.new({ClassName = 'Frame'; Properties = {
                         Name = 'DTopbar';
                         BackgroundColor3 = Color3.fromRGB(25, 25, 25);
                         Size = UDim2.new(0, 285, 0, 31);
                         Parent = dMain;
-                })
+                };})
 
-                local dUICorner1 = __instance.new('UICorner', {
+                local dUICorner1 = __instance.new({ClassName = 'UICorner'; Properties = {
                         Name = 'DUICorner';
                         CornerRadius = UDim.new(0, 5);
                         Parent = dTopbar;
-                })
+                };})
 
-                local dFix = __instance.new('Frame', {
+                local dFix = __instance.new({ClassName = 'Frame'; Properties = {
                         Name = 'DFix';
                         AnchorPoint = Vector2.new(0.5, 1);
                         BackgroundColor3 = Color3.fromRGB(34, 34, 34);
@@ -186,9 +186,9 @@ do
                         Size = UDim2.new(0, 284, 0, 1);
                         ZIndex = 2;
                         Parent = dTopbar;
-                })
+                };})
 
-                local dTitleText = __instance.new('TextLabel', {
+                local dTitleText = __instance.new({ClassName = 'TextLabel'; Properties = {
                         Name = 'DTitleText';
                         Font = Enum.Font.GothamBold;
                         Text = 'Downloading Assets';
@@ -200,9 +200,9 @@ do
                         Size = UDim2.new(0, 284, 0, 30);
                         ZIndex = 2;
                         Parent = dTopbar;
-                })
+                };})
 
-                local dText = __instance.new('TextLabel', {
+                local dText = __instance.new({ClassName = 'TextLabel'; Properties = {
                         Name = 'DText';
                         Font = Enum.Font.GothamBold;
                         Text = 'Loading...';
@@ -213,7 +213,7 @@ do
                         Position = UDim2.new(0.00132, 0, 0.39, 0);
                         Size = UDim2.new(0, 284, 0, 46);
                         Parent = dMain;
-                })
+                };})
 
                 for _, v in next, MissingTable do
                         local Png = request({Url = IconsTable[v].Url; Method = 'GET';})
