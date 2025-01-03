@@ -327,13 +327,12 @@ function library:Window(Info)
         main.Active = true --- ;
 
         local mainFrame = Instance.new('ImageButton') --- ;
-        local UICorner = Instance.new('UICorner')
 
+        mainFrame.Name = __random_abcE(10)
         mainFrame.Image = 'rbxassetid://138677317526548'
         mainFrame.HoverImage = 'rbxassetid://99948234050445'
         mainFrame.PressedImage = 'rbxassetid://111976017507856'
         
-        mainFrame.Name = __random_abcE(10)
         mainFrame.ImageTransparency = 0.14
         mainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
         mainFrame.BackgroundTransparency = 0.14
@@ -344,8 +343,12 @@ function library:Window(Info)
 
         mainFrame.Position = UDim2.new(0.489, 0, 0, 0)
         mainFrame.Size = UDim2.new(0, 42, 0, 43)
+        
         mainFrame.Draggable = true
+        mainFrame.ZIndex = 1
         mainFrame.Parent = shamanScreenGui
+
+        local UICorner = Instance.new('UICorner')
 
         UICorner.Name = __random_abcE(10)
         UICorner.CornerRadius = UDim.new(0, 5)
