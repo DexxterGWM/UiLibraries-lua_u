@@ -327,7 +327,6 @@ function library:Window(Info)
         main.Active = true --- ;
 
         --- TEST
-        --- TODO need border line and better corner radius
         local mainFrame = Instance.new('ImageButton') --- ;
 
         mainFrame.Name = __random_abcE(10)
@@ -336,13 +335,14 @@ function library:Window(Info)
         mainFrame.PressedImage = 'rbxassetid://111976017507856'
         
         mainFrame.Transparency = 0.14
-        --- mainFrame.ImageTransparency = 0.14
+        mainFrame.ImageTransparency = 0.14
+        mainFrame.BackgroundTransparency = 0.14
+        
         mainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
-        --- mainFrame.BackgroundTransparency = 0.14
         mainFrame.BorderSizePixel = 0
 
         mainFrame.Position = UDim2.new(0.489, 0, 0, 0)
-        mainFrame.Size = UDim2.new(0, 42, 0, 43)
+        mainFrame.Size = UDim2.new(0, 45, 0, 45)
         
         mainFrame.Draggable = true
         mainFrame.ZIndex = 2
