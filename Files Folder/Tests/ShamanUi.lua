@@ -336,10 +336,7 @@ function library:Window(Info)
         mainFrame.ImageTransparency = 0.14
         mainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
         mainFrame.BackgroundTransparency = 0.14
-
-        mainFrame.BorderColor3 = Color3.fromRGB(27, 27, 27)
-        mainFrame.BorderMode = Enum.BorderMode.Outline
-        mainFrame.BorderSizePixel = 5
+        mainFrame.BorderSizePixel = 0
 
         mainFrame.Position = UDim2.new(0.489, 0, 0, 0)
         mainFrame.Size = UDim2.new(0, 42, 0, 43)
