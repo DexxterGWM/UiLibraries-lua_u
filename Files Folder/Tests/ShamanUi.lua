@@ -326,66 +326,57 @@ function library:Window(Info)
         main.Parent = shamanScreenGui
         main.Active = true --- ;
 
-        --- TEST
-        --- do
-                local mainFrame = Instance.new('ImageButton')
-                local UICorner = Instance.new('UICorner')
+        local mainFrame = Instance.new('ImageButton') --- ;
+        local UICorner = Instance.new('UICorner')
 
-                mainFrame.Image = 'rbxassetid://138677317526548'
-                mainFrame.HoverImage = 'rbxassetid://99948234050445'
-                mainFrame.PressedImage = 'rbxassetid://111976017507856'
-
-                mainFrame.Name = __random_abcE(10)
-                mainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
-                mainFrame.BackgroundTransparency = 0.14
-
-                mainFrame.BorderColor3 = Color3.fromRGB(27, 27, 27)
-                mainFrame.BorderMode = Enum.BorderMode.Outline
-                mainFrame.BorderSizePixel = 1.5
-
-                mainFrame.Position = UDim2.new(0.489, 0, 0, 0)
-                mainFrame.Size = UDim2.new(0, 42, 0, 43)
-                mainFrame.Draggable = true
-                mainFrame.Parent = shamanScreenGui
-
-                print('frame:', mainFrame) ---
-
-                UICorner.Name = __random_abcE(10)
-                UICorner.CornerRadius = UDim.new(0, 5)
-                UICorner.Parent = mainFrame
-
-                print('corner:', UICorner) ---
-
-                local dragInput
-                local isDragging = false
-
-                mainFrame.InputBegan:Connect(function(input)
-                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                                isDragging = true
-                                input.Changed:Connect(function()
-                                        if input.UserInputState == Enum.UserInputState.End then
-                                                isDragging = false
-                                        end
-                                end)
-                        end
-                end)
-                mainFrame.InputChanged:Connect(function(input)
-                        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then --- ;
-                                dragInput = input
-                        end
-                end)
-                mainFrame.InputEnded:Connect(function(input)
-                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                                if input == dragInput and isDragging then onDrag()
-                                elseif input ~= dragInput and not isDragging then
-                                        main.Visible = not main.Visible
-                                end
-                        end
-                end)
-        --- end
-        ---
+        mainFrame.Image = 'rbxassetid://138677317526548'
+        mainFrame.HoverImage = 'rbxassetid://99948234050445'
+        mainFrame.PressedImage = 'rbxassetid://111976017507856'
         
-        print('got that') ---
+        mainFrame.Name = __random_abcE(10)
+        mainFrame.ImageTransparency = 0.14
+        mainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+        mainFrame.BackgroundTransparency = 0.14
+
+        mainFrame.BorderColor3 = Color3.fromRGB(27, 27, 27)
+        mainFrame.BorderMode = Enum.BorderMode.Outline
+        mainFrame.BorderSizePixel = 5
+
+        mainFrame.Position = UDim2.new(0.489, 0, 0, 0)
+        mainFrame.Size = UDim2.new(0, 42, 0, 43)
+        mainFrame.Draggable = true
+        mainFrame.Parent = shamanScreenGui
+
+        UICorner.Name = __random_abcE(10)
+        UICorner.CornerRadius = UDim.new(0, 5)
+        UICorner.Parent = mainFrame
+
+        local dragInput
+        local isDragging = false
+
+        mainFrame.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                        isDragging = true
+                        input.Changed:Connect(function()
+                                if input.UserInputState == Enum.UserInputState.End then
+                                        isDragging = false
+                                end
+                        end)
+                end
+        end)
+        mainFrame.InputChanged:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then --- ;
+                        dragInput = input
+                end
+        end)
+        mainFrame.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                        if input == dragInput and isDragging then onDrag()
+                        elseif input ~= dragInput and not isDragging then
+                                main.Visible = not main.Visible
+                        end
+                end
+        end)
 
         local uICorner = Instance.new('UICorner')
         uICorner.Name = 'UICorner'
