@@ -327,7 +327,7 @@ function library:Window(Info)
         main.Active = true --- ;
 
         --- TEST
-        do
+        --- do
                 local mainFrame = Instance.new('ImageButton')
                 local UICorner = Instance.new('UICorner')
 
@@ -340,7 +340,7 @@ function library:Window(Info)
                 mainFrame.BackgroundTransparency = 0.14
 
                 mainFrame.BorderColor3 = Color3.fromRGB(27, 27, 27)
-                mainFrame.BorderMode = Enum.GuiObject.BorderMode.Outline
+                mainFrame.BorderMode = Enum.BorderMode.Outline
                 mainFrame.BorderSizePixel = 1.5
 
                 mainFrame.Position = UDim2.new(0.489, 0, 0, 0)
@@ -378,7 +378,7 @@ function library:Window(Info)
                                 end
                         end
                 end)
-        end
+        --- end
         ---
 
         local uICorner = Instance.new('UICorner')
