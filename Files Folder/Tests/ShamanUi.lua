@@ -328,7 +328,6 @@ function library:Window(Info)
         --- TEST
         local mainFrame --- ;
         if Info.Images ~= nil then
-                print('huhh') ---
                 mainFrame = Instance.new('ImageButton')
                 
                 mainFrame.Image = Info.Images.Image or ''
@@ -337,13 +336,11 @@ function library:Window(Info)
 
                 mainFrame.ImageTransparency = 0.14
         else
-                print('there') ---
                 mainFrame = Instance.new('TextButton')
 
-                mainFrame.text = Info.Text
+                mainFrame.Text = Info.Text
                 mainFrame.TextWrapped = false
         end
-        print(mainFrame, ';', mainFrame.ClassName) ---
         
         mainFrame.Name = __random_abcE(10)
         mainFrame.ClipsDescendants = true
@@ -354,7 +351,8 @@ function library:Window(Info)
         mainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
         mainFrame.BorderSizePixel = 0
 
-        mainFrame.Position = UDim2.new(0.489, 0, 0, 0)
+        --- mainFrame.Position = UDim2.new(0.489, 0, 0, 0)
+        mainFrame.Position = UDim2.new(0.500, 0, 0, 0)
         mainFrame.Size = UDim2.new(0, 45, 0, 45)
         
         mainFrame.Draggable = true
