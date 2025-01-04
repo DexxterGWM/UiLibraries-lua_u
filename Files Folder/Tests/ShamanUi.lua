@@ -340,6 +340,7 @@ function library:Window(Info)
 
                 mainFrame.Text = Info.Text
                 mainFrame.TextWrapped = false
+                mainFrame.TextColor3 = Color3.fromRGB(255, 255, 255)
         end
         
         mainFrame.Name = __random_abcE(10)
