@@ -328,6 +328,7 @@ function library:Window(Info)
         --- TEST
         local mainFrame --- ;
         if Info.Images ~= nil then
+                print('huhh') ---
                 mainFrame = Instance.new('ImageButton')
                 
                 mainFrame.Image = Info.Images.Image or ''
@@ -336,11 +337,13 @@ function library:Window(Info)
 
                 mainFrame.ImageTransparency = 0.14
         else
+                print('there') ---
                 mainFrame = Instance.new('TextButton')
 
                 mainFrame.text = Info.Text
                 mainFrame.TextWrapped = false
         end
+        print(mainFrame, ';', mainFrame.ClassName) ---
         
         mainFrame.Name = __random_abcE(10)
         mainFrame.ClipsDescendants = true
@@ -391,7 +394,7 @@ function library:Window(Info)
         end)
         mainFrame.InputEnded:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                        if input == dragInput and isDragging then onDrag()
+                        if input == dragInput and isDragging then
                         elseif input ~= dragInput and not isDragging then
                                 main.Visible = not main.Visible
                         end
