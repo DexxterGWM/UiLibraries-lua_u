@@ -7,9 +7,8 @@
 -- ui library: https://raw.githubusercontent.com/Rain-Design/Libraries/main/Shaman/Library.lua (by ZCute (from v3rmillion Thread))
 --]]
 
----@param ... <any>
----@return <any>
 getgenv().cloneref = cloneref or function(...) return ... end
+getgenv().clonefunction = clonefunction or function(...) return ... end
 
 getgenv().request = (http and http.request) or (syn and syn.request) or (fluxus and fluxus.request) or httprequest or request or http_request or httpget
 getgenv().getcustomasset = getsynasset or getcustomasset
@@ -327,15 +326,26 @@ function library:Window(Info)
         main.Active = true --- ;
 
         --- TEST
-        local mainFrame = Instance.new('ImageButton') --- ;
+        local mainFrame --- ;
+        if Info.Images ~= nil then
+                mainFrame = Instance.new('ImageButton')
+                
+                mainFrame.Image = Info.Images.Image or ''
+                mainFrame.HoverImage = Info.Images.HoverImage or ''
+                mainFrame.PressedImage = Info.Images.PressedImage or ''
 
-        mainFrame.Name = __random_abcE(10)
-        mainFrame.Image = 'rbxassetid://138677317526548'
-        mainFrame.HoverImage = 'rbxassetid://99948234050445'
-        mainFrame.PressedImage = 'rbxassetid://111976017507856'
+                mainFrame.ImageTransparency = 0.14
+        else
+                mainFrame = Instance.new('TextButton')
+
+                mainFrame.text = Info.Text
+                mainFrame.TextWrapped = false
+        end
         
+        mainFrame.Name = __random_abcE(10)
+        mainFrame.ClipsDescendants = true
+
         mainFrame.Transparency = 0.14
-        mainFrame.ImageTransparency = 0.14
         mainFrame.BackgroundTransparency = 0.14
         
         mainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
