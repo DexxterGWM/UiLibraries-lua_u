@@ -1,10 +1,14 @@
+---@diagnostic disable: undefined-global, duplicate-set-field, deprecated, luadoc-miss-type-name
+
+---@TODO
+---@TEST
+
 --[[
 -- ui library: https://raw.githubusercontent.com/Rain-Design/Libraries/main/Shaman/Library.lua (by ZCute (from v3rmillion Thread))
 --]]
 
----@param ... <any>
----@return <any>
 getgenv().cloneref = cloneref or function(...) return ... end
+getgenv().clonefunction = clonefunction or function(...) return ... end
 
 getgenv().request = (http and http.request) or (syn and syn.request) or (fluxus and fluxus.request) or httprequest or request or http_request or httpget
 getgenv().getcustomasset = getsynasset or getcustomasset
@@ -12,7 +16,9 @@ getgenv().isfolder = syn_isfolder or is_folder or isfolder
 getgenv().isfile = syn_isfile or is_file or isfile
 --- getgenv().listfiles = listdir or listfiles or list_files
 getgenv().writefile = write or write_file or writefile
-getgenv().makefolder = create_folder or createfolder or make_folder or makefolder
+getgenv().makefolder = create_folder or make_folder or createfolder or makefolder
+
+local Game = cloneref(Game)
 
 local GetService = Game.GetService
 local Destroy = Game.Destroy
@@ -22,23 +28,33 @@ local TweenService = cloneref(GetService(Game, 'TweenService'))
 local UserInputService = cloneref(GetService(Game, 'UserInputService'))
 local Players = cloneref(GetService(Game, 'Players'))
 
-local __instance = {}
-do
-        __instance.new = function(ClassName, Properties, Parent)
+local Tostring = clonefunction(tostring)
+
+local __instance = {
+	new = function(Data)
+                local ClassName = Data.ClassName
+                local Properties = Data.Properties
+                local Parent = Properties.Parent
+
                 local Instance = Instance.new(ClassName)
-                local Properties = Properties or {}
-                local Parent = Parent or Instance
-                
-                if Instance == Parent then
-                else
-                        Instance.Parent = Parent
+                for i, v in next, Properties do
+                                Instance[i] = v
                 end
 
-                for i, v in next, Properties do
-                        Instance[i] = v
-                end
+                Instance.Parent = Parent
                 return Instance
-        end
+	end
+}
+
+---@param Length <number>
+---@return <string>
+local __random_abcE = function(Length)
+	local RandomString = ''
+	for _ = 1, Length do
+			local RandomNumber = math.random(97, 122)
+			RandomString = RandomString .. string.char(RandomNumber)
+	end
+	return Tostring(RandomString)
 end
 
 if Game.FindFirstChild(CoreGui, 'Shaman') then
@@ -69,47 +85,47 @@ local TabSelected = nil
 local ColorElements = {}
 
 local library = {
-        Flags = {}
+        Flags = {};
 }
 
 do
-        if not isfolder('Shaman') then
+        if not isfolder('Shaman') then --- ;
                 makefolder('Shaman')
         end
 
         local IconsTable = {
                 ['Shaman/Circle.png'] = {
-                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/Circle.png',
-                        ['Name'] = 'Circle.Png'
-                },
+                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/Circle.png';
+                        ['Name'] = 'Circle.Png';
+                };
                 ['Shaman/ColorDropper.png'] = {
-                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/ColorDropper.png',
-                        ['Name'] = 'ColorDropper.png'
-                },
+                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/ColorDropper.png';
+                        ['Name'] = 'ColorDropper.png';
+                };
                 ['Shaman/Close.png'] = {
-                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/Close.png',
-                        ['Name'] = 'Close.png'
-                },
+                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/Close.png';
+                        ['Name'] = 'Close.png';
+                };
                 ['Shaman/CollapseArrow.png'] = {
-                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/CollapseArrow.png',
-                        ['Name'] = 'CollapseArrow.png'
-                },
+                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/CollapseArrow.png';
+                        ['Name'] = 'CollapseArrow.png';
+                };
                 ['Shaman/RadioButton.png'] = {
-                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/RadioButton.png',
-                        ['Name'] = 'RadioButton.png'
-                },
+                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/RadioButton.png';
+                        ['Name'] = 'RadioButton.png';
+                };
                 ['Shaman/RadioOuter.png'] = {
-                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/RadioOuter.png',
-                        ['Name'] = 'RadioOuter.png'
-                },
+                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/RadioOuter.png';
+                        ['Name'] = 'RadioOuter.png';
+                };
                 ['Shaman/RadioInner.png'] = {
-                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/RadioInner.png',
-                        ['Name'] = 'RadioInner.png'
+                        ['Url'] = 'https://raw.githubusercontent.com/Rain-Design/Icons/main/RadioInner.png';
+                        ['Name'] = 'RadioInner.png';
                 }
         }
         local MissingTable = {}
 
-        for i, v in next, IconsTable do
+        for i, _ in next, IconsTable do
                 if isfile(i) then
                 else
                         table.insert(MissingTable, i)
@@ -119,47 +135,48 @@ do
         if 0 < #MissingTable then
                 warn(':: Shaman :: !~ Downloading resources') ---
 
-                local download = __instance.new('ScreenGui', {
+                local download = __instance.new({ClassName = 'ScreenGui'; Properties = {
                         Name = 'Download';
                         Enabled = true;
                         ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
-                }, CoreGui)
+                        Parent = CoreGui;
+                };})
 
-                local dMain = __instance.new('Frame', {
+                local dMain = __instance.new({ClassName = 'Frame'; Properties = {
                         Name = 'DMain';
                         AnchorPoint = Vector2.new(0.5, 0.5);
                         BackgroundColor3 = Color3.fromRGB(27, 27, 27);
                         Position = UDim2.new(0.5, 0, 0.486, 0);
                         Size = UDim2.new(0, 285, 0, 77);
                         Parent = download;
-                })
+                };})
 
-                local dUICorner = __instance.new('UICorner', {
+                local dUICorner = __instance.new({ClassName = 'UICorner'; Properties = {
                         Name = 'DUICorner';
                         CornerRadius = UDim.new(0, 5);
                         Parent = dMain;
-                })
+                };})
 
-                local dUIStroke = __instance.new('UIStroke', {
+                local dUIStroke = __instance.new({ClassName = 'UIStroke'; Properties = {
                         Name = 'DUIStroke';
                         Color = Color3.fromRGB(45, 45, 45);
                         Parent = dMain;
-                })
+                };})
 
-                local dTopbar = __instance.new('Frame', {
+                local dTopbar = __instance.new({ClassName = 'Frame'; Properties = {
                         Name = 'DTopbar';
                         BackgroundColor3 = Color3.fromRGB(25, 25, 25);
                         Size = UDim2.new(0, 285, 0, 31);
                         Parent = dMain;
-                })
+                };})
 
-                local dUICorner1 = __instance.new('UICorner', {
+                local dUICorner1 = __instance.new({ClassName = 'UICorner'; Properties = {
                         Name = 'DUICorner';
                         CornerRadius = UDim.new(0, 5);
                         Parent = dTopbar;
-                })
+                };})
 
-                local dFix = __instance.new('Frame', {
+                local dFix = __instance.new({ClassName = 'Frame'; Properties = {
                         Name = 'DFix';
                         AnchorPoint = Vector2.new(0.5, 1);
                         BackgroundColor3 = Color3.fromRGB(34, 34, 34);
@@ -168,9 +185,9 @@ do
                         Size = UDim2.new(0, 284, 0, 1);
                         ZIndex = 2;
                         Parent = dTopbar;
-                })
+                };})
 
-                local dTitleText = __instance.new('TextLabel', {
+                local dTitleText = __instance.new({ClassName = 'TextLabel'; Properties = {
                         Name = 'DTitleText';
                         Font = Enum.Font.GothamBold;
                         Text = 'Downloading Assets';
@@ -182,9 +199,9 @@ do
                         Size = UDim2.new(0, 284, 0, 30);
                         ZIndex = 2;
                         Parent = dTopbar;
-                })
+                };})
 
-                local dText = __instance.new('TextLabel', {
+                local dText = __instance.new({ClassName = 'TextLabel'; Properties = {
                         Name = 'DText';
                         Font = Enum.Font.GothamBold;
                         Text = 'Loading...';
@@ -195,10 +212,10 @@ do
                         Position = UDim2.new(0.00132, 0, 0.39, 0);
                         Size = UDim2.new(0, 284, 0, 46);
                         Parent = dMain;
-                })
+                };})
 
                 for _, v in next, MissingTable do
-                        local Png = request({Url = IconsTable[v].Url, Method = 'GET'})
+                        local Png = request({Url = IconsTable[v].Url; Method = 'GET';})
                         writefile(v, Png.Body)
                         dText.Text = ('Downloaded: %s'):format(IconsTable[v].Name)
                 end
@@ -308,6 +325,81 @@ function library:Window(Info)
         main.Parent = shamanScreenGui
         main.Active = true --- ;
 
+        --- TEST
+        local mainFrame --- ;
+        if Info.Images ~= nil then
+                mainFrame = Instance.new('ImageButton')
+                
+                mainFrame.Image = Info.Images.Image or ''
+                mainFrame.HoverImage = Info.Images.HoverImage or ''
+                mainFrame.PressedImage = Info.Images.PressedImage or ''
+
+                mainFrame.ImageTransparency = 0.14
+        else
+                mainFrame = Instance.new('TextButton')
+
+                mainFrame.Text = Info.Text
+                mainFrame.TextWrapped = false
+                mainFrame.TextColor3 = Color3.fromRGB(255, 255, 255)
+        end
+        
+        mainFrame.Name = __random_abcE(10)
+        mainFrame.ClipsDescendants = true
+
+        mainFrame.Transparency = 0.14
+        mainFrame.BackgroundTransparency = 0.14
+        
+        mainFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+        mainFrame.BorderSizePixel = 0
+
+        --- mainFrame.Position = UDim2.new(0.489, 0, 0, 0)
+        mainFrame.Position = UDim2.new(0.500, 0, 0, 0)
+        mainFrame.Size = UDim2.new(0, 45, 0, 45)
+        
+        mainFrame.Draggable = true
+        mainFrame.ZIndex = 2
+        mainFrame.Parent = shamanScreenGui
+
+        local UICorner = Instance.new('UICorner')
+
+        UICorner.Name = __random_abcE(10)
+        UICorner.CornerRadius = UDim.new(0.2, 0.2)
+        UICorner.Parent = mainFrame
+
+        local UIStroke = Instance.new('UIStroke')
+        
+        UIStroke.Color = Color3.fromRGB(27, 27, 27)
+        UIStroke.Thickness = 2.5
+        UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        UIStroke.Parent = mainFrame
+
+        local dragInput
+        local isDragging = false
+
+        mainFrame.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                        isDragging = true
+                        input.Changed:Connect(function()
+                                if input.UserInputState == Enum.UserInputState.End then
+                                        isDragging = false
+                                end
+                        end)
+                end
+        end)
+        mainFrame.InputChanged:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then --- ;
+                        dragInput = input
+                end
+        end)
+        mainFrame.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                        if input == dragInput and isDragging then
+                        elseif input ~= dragInput and not isDragging then
+                                main.Visible = not main.Visible
+                        end
+                end
+        end)
+
         local uICorner = Instance.new('UICorner')
         uICorner.Name = 'UICorner'
         uICorner.CornerRadius = UDim.new(0, 5)
@@ -355,7 +447,6 @@ function library:Window(Info)
                         update(input)
                 end
         end)
-
 
         local uICorner1 = Instance.new('UICorner')
         uICorner1.Name = 'UICorner'
@@ -1007,7 +1098,7 @@ function library:Window(Info)
 
                         function sectiontable:Button(Info)
                                 Info.Text = Info.Text or 'Button'
-                                Info.SubText = Info.SubText or Info.Text --- ;
+                                Info.SubText = Info.SubText or 'Clicked' --- ;
                                 Info.Flag = Info.Flag or nil
                                 Info.Callback = Info.Callback or function() end
                                 Info.Tooltip = Info.Tooltip or ''
@@ -1064,7 +1155,7 @@ function library:Window(Info)
                                                 if Info.Text == Info.SubText then
                                                 else
                                                         buttonText.Text = Info.SubText
-                                                        wait(2)
+                                                        wait(1)
                                                 end
                                                 buttonText.Text = Info.Text
                                                 Toggled = false
